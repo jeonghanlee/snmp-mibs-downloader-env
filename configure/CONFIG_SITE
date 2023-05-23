@@ -4,5 +4,5 @@ CONF_DIR=/etc/snmp-mibs-downloader
 SNMP_DIR=/usr/share/snmp
 
 DOWNLOADER_DIR=$(SNMP_DIR)/mibs-downloader
-MIBS_DIR=$(SNMP_DIR)/mibs/
+MIBS_DIR=$(SNMP_DIR)/mibs
 

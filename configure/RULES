@@ -1,5 +1,5 @@
 #
-vpath $(TOP)/$(SRC_PATH)
+VPATH = $(TOP) $(TOP)/$(SRC_PATH)
 #
 
 include $(TOP)/configure/RULES_FUNC

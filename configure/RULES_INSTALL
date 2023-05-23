@@ -1,29 +1,30 @@
 
-install: $(BINS)
-	$(INSTALL) -m 644 ($(CONFFILES) $(CONF_DIR)
-	cp $(SRC_PATH)/mibrfcs/*       $(DOWNLOADER_DIR)/mibrfcs
-	cp $(SRC_PATH)/mibiana/*       $(DOWNLOADER_DIR)/mibiana
-	gzip -n9                       $(DOWNLOADER_DIR)/mibrfcs/*
-	gzip -n9                       $(DOWNLOADER_DIR)/mibiana/*
-	ln -s /var/lib/mibs/ietf       $(MIBS_DIR)/ietf
-	ln -s /var/lib/mibs/iana       $(MIBS_DIR)/iana
+install: dirs bins_install 
+	cp $(SRC_PATH)/mibrfcs/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
+	cp $(SRC_PATH)/mibiana/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibiana
+	gzip -n9f                      $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs/*
+	gzip -n9f                      $(DESTDIR)$(DOWNLOADER_DIR)/mibiana/*
+	ln -sf /var/lib/mibs/ietf      $(DESTDIR)$(MIBS_DIR)/ietf
+	ln -sf /var/lib/mibs/iana      $(DESTDIR)$(MIBS_DIR)/iana
 
 
-conf_install:
-	$(INSTALL) -m 644 $(CONFFILES) $(CONF_DIR)
+conf_install: $(CONFS)
+	$(INSTALL) -m 644 $^ $(DESTDIR)$(CONF_DIR)/
 
 clean: src_uninstall
-	rm -rf $(CONF_DIR)
-	rm -rf $(DOWNLOADER_DIR)
+	rm -rf $(DESTDIR)$(CONF_DIR)
+	rm -rf $(DESTDIR)$(DOWNLOADER_DIR)
 
-bins_install: $(BINS)
-	$(INSTALL) -m 755 $^ /usr/bin/
+bins_install: $(SCRIPTS)
+	$(INSTALL) -m 755 $^ $(DESTDIR)/usr/bin/
 
-bins_uninstall: $(BINS)
-	rm -f  /usr/bin/$^
+bins_uninstall:
+	$(foreach file, $(SCRIPTS), rm -f  $(DESTDIR)/usr/bin/$(file);)
 
 dirs:
-	mkdir -p $(CONF_DIR)
-	mkdir -p $(DOWNLOADER_DIR)/mib{rfcs,iana}
+	$(INSTALL) -d $(DESTDIR)$(CONF_DIR)
+	$(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
+	$(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
+	$(INSTALL) -d $(DESTDIR)$(MIBS_DIR)
 
-.PHONY : install clean dirs $(BINFILES)
+.PHONY : conf_install bins_install bins_uninstall dirs
