@@ -26,4 +26,4 @@ make exist
 
 ## ``smistrip``
 
-The original source and its license are <https://gitlab.ibr.cs.tu-bs.de/nm/libsmi>. This repository uses the Debian 11 version `smistrip` file.
+The original source and its license are in the repository <https://gitlab.ibr.cs.tu-bs.de/nm/libsmi>. This repository uses the Debian 11 version `smistrip` file.
