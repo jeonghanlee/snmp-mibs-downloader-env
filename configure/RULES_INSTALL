@@ -1,30 +1,32 @@
+# DESTDIR is used for the local install test
 
 install: dirs bins_install conf_install 
-	cp $(SRC_PATH)/mibrfcs/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
-	cp $(SRC_PATH)/mibiana/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibiana
-	gzip -n9f                      $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs/*
-	gzip -n9f                      $(DESTDIR)$(DOWNLOADER_DIR)/mibiana/*
-	ln -sf /var/lib/mibs/ietf      $(DESTDIR)$(MIBS_DIR)/ietf
-	ln -sf /var/lib/mibs/iana      $(DESTDIR)$(MIBS_DIR)/iana
+	$(SUDO) cp $(SRC_PATH)/mibrfcs/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
+	$(SUDO) cp $(SRC_PATH)/mibiana/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibiana
+	$(SUDO) gzip -n9f                      $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs/*
+	$(SUDO) gzip -n9f                      $(DESTDIR)$(DOWNLOADER_DIR)/mibiana/*
+	$(SUDO) ln -sf /var/lib/mibs/ietf      $(DESTDIR)$(MIBS_DIR)/ietf
+	$(SUDO) ln -sf /var/lib/mibs/iana      $(DESTDIR)$(MIBS_DIR)/iana
 
 
 conf_install: $(CONFS)
-	$(INSTALL) -m 644 $^ $(DESTDIR)$(CONF_DIR)/
-
-clean: src_uninstall
-	rm -rf $(DESTDIR)$(CONF_DIR)
-	rm -rf $(DESTDIR)$(DOWNLOADER_DIR)
+	$(SUDO) $(INSTALL) -m 644 $^ $(DESTDIR)$(CONF_DIR)/
 
 bins_install: $(SCRIPTS)
-	$(INSTALL) -m 755 $^ $(DESTDIR)/usr/bin/
+	$(SUDO) $(INSTALL) -m 755 $^ $(DESTDIR)/usr/bin/
+
+uninstall: bins_uninstall 
+	$(SUDO) rm -rf $(DESTDIR)$(CONF_DIR)
+	$(SUDO) rm -rf $(DESTDIR)$(DOWNLOADER_DIR)
+	$(SUDO) rm -rf $(DESTDIR)$(MIBS_DIR)
 
 bins_uninstall:
-	$(foreach file, $(SCRIPTS), rm -f  $(DESTDIR)/usr/bin/$(file);)
+	$(foreach file, $(SCRIPTS), $(SUDO) rm -f  $(DESTDIR)/usr/bin/$(file);)
 
 dirs:
-	$(INSTALL) -d $(DESTDIR)$(CONF_DIR)
-	$(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
-	$(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
-	$(INSTALL) -d $(DESTDIR)$(MIBS_DIR)
+	$(SUDO) $(INSTALL) -d $(DESTDIR)$(CONF_DIR)
+	$(SUDO) $(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
+	$(SUDO) $(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
+	$(SUDO) $(INSTALL) -d $(DESTDIR)$(MIBS_DIR)
 
-.PHONY : conf_install bins_install bins_uninstall dirs
+.PHONY : install conf_install bins_install uninstall bins_uninstall dirs
