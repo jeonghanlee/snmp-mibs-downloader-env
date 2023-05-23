@@ -1,27 +1,26 @@
 
 install: dirs installbins
-	$(INSTALL) -m 755 $(BINFILES)  $(DESTDIR)/usr/bin
-	$(INSTALL) -m 644 $(CONFFILES) $(DESTDIR)/etc/snmp-mibs-downloader
-	cp $(SRC_PATH)/mibrfcs/*       $(DESTDIR)/usr/share/snmp/mibs-downloader/mibrfcs
-	cp $(SRC_PATH)/mibiana/*       $(DESTDIR)/usr/share/snmp/mibs-downloader/mibiana
-	gzip -n9                       $(DESTDIR)/usr/share/snmp/mibs-downloader/mibrfcs/*
-	gzip -n9                       $(DESTDIR)/usr/share/snmp/mibs-downloader/mibiana/*
-	ln -s /var/lib/mibs/ietf       $(DESTDIR)/usr/share/snmp/mibs/ietf
-	ln -s /var/lib/mibs/iana       $(DESTDIR)/usr/share/snmp/mibs/iana
+	$(INSTALL) -m 644 $(CONFFILES) $(CONF_DIR)
+	cp $(SRC_PATH)/mibrfcs/*       $(DOWNLOADER_DIR)/mibrfcs
+	cp $(SRC_PATH)/mibiana/*       $(DOWNLOADER_DIR)/mibiana
+	gzip -n9                       $(DOWNLOADER_DIR)/mibrfcs/*
+	gzip -n9                       $(DOWNLOADER_DIR)/mibiana/*
+	ln -s /var/lib/mibs/ietf       $(MIBS_DIR)/ietf
+	ln -s /var/lib/mibs/iana       $(MIBS_DIR)/iana
 
 
 clean: $(BINFILES)
-	rm -rf $(DESTDIR)$(REPO_BASE)
-	rm -rf $(DESTDIR)$(REPO_DOWNLOADER_BASE)
+	rm -rf $(CONF_DIR)
+	rm -rf $(DOWNLOADER_DIR)
 
 installbins: $(BINFILES)
-	$(INSTALL) -m 755 $(BINFILES)  $(DESTDIR)/usr/bin
+	$(INSTALL) -m 755 $(BINFILES)  /usr/bin
 
 $(BINFILES): 
-	rm -f  $(DESTDIR)/usr/bin/$@
+	rm -f  /usr/bin/$@
 
 dirs:
-	mkdir -p $(DESTDIR)$(REPO_BASE)
-	mkdir -p $(DESTDIR)$(REPO_DOWNLOADER_BASE)/mib{rfcs,iana}
+	mkdir -p $(CONF_DIR)
+	mkdir -p $(DOWNLOADER_DIR)/mib{rfcs,iana}
 
 .PHONY : install clean dirs $(BINFILES)

@@ -1,12 +1,8 @@
 
-### $APPNAME installation location
-INSTALL_PATH=/opt
-INSTALL_LOCATION=$(INSTALL_PATH)/pvwebsocket
+CONF_DIR=/etc/snmp-mibs-downloader
 
-APPNAME_TOP:=$(INSTALL_LOCATION)
+SNMP_DIR=/usr/share/snmp
 
-# These allow developers to override the CONFIG_SITE variable
-# settings without having to modify the configure/CONFIG_SITE
-# file itself.
--include $(TOP)/../CONFIG_SITE.local
--include $(TOP)/configure/CONFIG_SITE.local
+DOWNLOADER_DIR=$(SNMP_DIR)/mibs-downloader
+MIBS_DIR=$(SNMP_DIR)/mibs/
+
