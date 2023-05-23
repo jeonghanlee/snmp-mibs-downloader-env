@@ -1,7 +1,5 @@
 #
 vpath %.conf $(TOP)/$(SRC_PATH)
-vpath download-mibs $(TOP)/$(SRC_PATH)
-vpath smistrip $(TOP)/smistrip
 
 include $(TOP)/configure/RULES_FUNC
 include $(TOP)/configure/RULES_PATCH

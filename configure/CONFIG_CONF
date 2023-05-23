@@ -9,4 +9,4 @@ CONFFILES= snmp-mibs-downloader.conf \
            simpleweb.conf simplelist \
            $(nil)
 
-BINFILES=  download-mibs smistrip
+BINFILES= $(SRC_PATH)/download-mibs $(TOP)/smistrip/smistrip
