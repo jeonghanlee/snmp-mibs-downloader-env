@@ -26,7 +26,7 @@ bins_uninstall:
 dirs:
 	$(SUDO) $(INSTALL) -d $(DESTDIR)$(CONF_DIR)
 	$(SUDO) $(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
-	$(SUDO) $(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
+	$(SUDO) $(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibiana
 	$(SUDO) $(INSTALL) -d $(DESTDIR)$(MIBS_DIR)
 
 .PHONY : install conf_install bins_install uninstall bins_uninstall dirs
