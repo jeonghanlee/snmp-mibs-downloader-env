@@ -1,5 +1,7 @@
 #
 vpath %.conf $(TOP)/$(SRC_PATH)
+vpath smistrip $(TOP)
+vpath %-mibs $(TOP)/$(SRC_PATH)
 
 include $(TOP)/configure/RULES_FUNC
 include $(TOP)/configure/RULES_PATCH
