@@ -1,0 +1,30 @@
+---
+name: Rocky9
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignores:
+      - '*.md'
+
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Rocky8:
+
+    runs-on: ubuntu-latest
+    container: rockylinux/rockylinux:9
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install required packages
+      run: |
+        dnf install -y git make sudo tree net-snmp patch which
+    - name: Setup
+      run: |
+        make init
+        make install
+        make setup
+    - name: Environment Check
+      run: make exist
