@@ -41,5 +41,10 @@ distclean:
 
 deinit: distclean
 
-setup:
-	$(SUDO) download-mibs
+get:
+	$(SUDO) download-mibs --get
+
+list:
+	$(SUDO) download-mibs --list
+
+.PHONY: get list

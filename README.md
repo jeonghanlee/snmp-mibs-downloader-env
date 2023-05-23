@@ -14,7 +14,13 @@ Configuration Environment for the snmp-mibs-downloader at <https://salsa.debian.
 ```bash
 make init
 make install
-make setup
+make get
+```
+
+### Check 
+
+```
+make list
 make exist
 ```
 
