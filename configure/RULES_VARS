@@ -70,9 +70,11 @@ FORCE:
 
 exist:
 ifeq (, $(shell which tree))
-	$(if $(wildcard $(INSTALL_LOCATION)), @ ls -d $(INSTALL_LOCATION) && find $(INSTALL_LOCATION)/ -maxdepth $(LEVEL) | sed -e "s/[^-][^\/]*\// |/g" -e "s/|\([^ ]\)/:---\1/")
+	@ ls -d $(CONF_DIR) && find $(CONF_DIR)/ -maxdepth $(LEVEL) | sed -e "s/[^-][^\/]*\// |/g" -e "s/|\([^ ]\)/:---\1/"
+	@ ls -d $(DOWNLOADER_DIR) && find $(DOWNLOADER_DIR)/ -maxdepth $(LEVEL) | sed -e "s/[^-][^\/]*\// |/g" -e "s/|\([^ ]\)/:---\1/"
+	@ ls -d $(MIBS_DIR) && find $(MIBS_DIR)/ -maxdepth $(LEVEL) | sed -e "s/[^-][^\/]*\// |/g" -e "s/|\([^ ]\)/:---\1/"
 else
-	$(if $(wildcard $(INSTALL_LOCATION)), tree -aL $(LEVEL) $(INSTALL_LOCATION), $(QUIET)echo "No $(INSTALL_LOCATION)")
+	tree -aL $(LEVEL) $(CONF_DIR) $(DOWNLOADER_DIR) $(MIBS_DIR)
 endif
 
 
