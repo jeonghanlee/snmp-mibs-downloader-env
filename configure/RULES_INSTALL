@@ -1,6 +1,6 @@
 
-install: dirs src_install conf_install
-	$(INSTALL) -m 644 $(CONFFILES) $(CONF_DIR)
+install: $(BINS)
+	$(INSTALL) -m 644 ($(CONFFILES) $(CONF_DIR)
 	cp $(SRC_PATH)/mibrfcs/*       $(DOWNLOADER_DIR)/mibrfcs
 	cp $(SRC_PATH)/mibiana/*       $(DOWNLOADER_DIR)/mibiana
 	gzip -n9                       $(DOWNLOADER_DIR)/mibrfcs/*
@@ -16,13 +16,11 @@ clean: src_uninstall
 	rm -rf $(CONF_DIR)
 	rm -rf $(DOWNLOADER_DIR)
 
-src_install: 
-	$(INSTALL) -m 755 $(TOP)/smistrip /usr/bin
-	$(INSTALL) -m 755 $(TOP)/$(SRC_PATH)/download-mibs /usr/bin
+bins_install: $(BINS)
+	$(INSTALL) -m 755 $^ /usr/bin/
 
-src_uninstall): 
-	rm -f  /usr/bin/smistrip
-	rm -f  /usr/bin/download-mibs
+bins_uninstall: $(BINS)
+	rm -f  /usr/bin/$^
 
 dirs:
 	mkdir -p $(CONF_DIR)
