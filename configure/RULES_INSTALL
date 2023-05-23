@@ -1,5 +1,5 @@
 
-install: dirs bins_install 
+install: dirs bins_install conf_install 
 	cp $(SRC_PATH)/mibrfcs/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
 	cp $(SRC_PATH)/mibiana/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibiana
 	gzip -n9f                      $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs/*

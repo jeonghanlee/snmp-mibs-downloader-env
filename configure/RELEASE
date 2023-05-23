@@ -1,6 +1,4 @@
 
-DESTDIR?=
-
 APPNAME:=snmp-mibs-downloader
 
 ## Where the Source repository SRC_URL/SRC_NAME
