@@ -1,15 +1,15 @@
 
-APPNAME:=env-template
+APPNAME:=snmp-mibs-downloader
 
 ## Where the Source repository SRC_URL/SRC_NAME
 #
-SRC_URL:=https://github.com/jeonghanlee
+SRC_URL:=https://salsa.debian.org/debian
 SRC_NAME:=${APPNAME}
 
 
 ## Which the source tag / branch / hash id would like to use
-# 2020-04-21
-SRC_TAG:=master
+# 2022-10-14
+SRC_TAG:=b101e197
 
 # Placeholder for the site-specific version control 
 SRC_VERSION:=master
