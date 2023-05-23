@@ -1,5 +1,5 @@
 
-install: dirs installbins
+install: dirs src_install conf_install
 	$(INSTALL) -m 644 $(CONFFILES) $(CONF_DIR)
 	cp $(SRC_PATH)/mibrfcs/*       $(DOWNLOADER_DIR)/mibrfcs
 	cp $(SRC_PATH)/mibiana/*       $(DOWNLOADER_DIR)/mibiana
@@ -9,15 +9,20 @@ install: dirs installbins
 	ln -s /var/lib/mibs/iana       $(MIBS_DIR)/iana
 
 
-clean: $(BINFILES)
+conf_install:
+	$(INSTALL) -m 644 $(CONFFILES) $(CONF_DIR)
+
+clean: src_uninstall
 	rm -rf $(CONF_DIR)
 	rm -rf $(DOWNLOADER_DIR)
 
-installbins: $(BINFILES)
-	$(INSTALL) -m 755 $(BINFILES)  /usr/bin
+src_install: 
+	$(INSTALL) -m 755 $(TOP)/smistrip /usr/bin
+	$(INSTALL) -m 755 $(TOP)/$(SRC_PATH)/download-mibs /usr/bin
 
-$(BINFILES): 
-	rm -f  /usr/bin/$@
+src_uninstall): 
+	rm -f  /usr/bin/smistrip
+	rm -f  /usr/bin/download-mibs
 
 dirs:
 	mkdir -p $(CONF_DIR)
