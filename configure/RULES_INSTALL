@@ -1,34 +1,27 @@
-.PHONY: install uninstall src_install src_uninstall
 
-install: src_install
-uninstall: src_uninstall
+install: dirs installbins
+	$(INSTALL) -m 755 $(BINFILES)  $(DESTDIR)/usr/bin
+	$(INSTALL) -m 644 $(CONFFILES) $(DESTDIR)/etc/snmp-mibs-downloader
+	cp $(SRC_PATH)/mibrfcs/*       $(DESTDIR)/usr/share/snmp/mibs-downloader/mibrfcs
+	cp $(SRC_PATH)/mibiana/*       $(DESTDIR)/usr/share/snmp/mibs-downloader/mibiana
+	gzip -n9                       $(DESTDIR)/usr/share/snmp/mibs-downloader/mibrfcs/*
+	gzip -n9                       $(DESTDIR)/usr/share/snmp/mibs-downloader/mibiana/*
+	ln -s /var/lib/mibs/ietf       $(DESTDIR)/usr/share/snmp/mibs/ietf
+	ln -s /var/lib/mibs/iana       $(DESTDIR)/usr/share/snmp/mibs/iana
 
 
-src_install: src_version src_preinst
-	$(QUIET)$(SUDO) install -d $(INSTALL_LOCATION)
-	$(QUIET)$(SUDO) $(INSTALL_DATA) -b $(SITE_TEMPLATE_PATH)/.versions  $(INSTALL_LOCATION)/
-	$(QUIET)$(SUDO)	chown -R $(USERID):$(GROUPID) $(INSTALL_LOCATION)
+clean: $(BINFILES)
+	rm -rf $(DESTDIR)$(REPO_BASE)
+	rm -rf $(DESTDIR)$(REPO_DOWNLOADER_BASE)
 
-src_uninstall: sd_stop sd_disable sd_clean src_postrm src_version_clean
-	$(QUIET)echo "Removing $(INSTALL_LOCATION)..."
-	$(QUIET)$(SUDO) rm -rf $(INSTALL_LOCATION)/
+installbins: $(BINFILES)
+	$(INSTALL) -m 755 $(BINFILES)  $(DESTDIR)/usr/bin
 
-.PHONY: src_version src_version.show src_version.clean
+$(BINFILES): 
+	rm -f  $(DESTDIR)/usr/bin/$@
 
-src_version: FORCE
-	$(QUIET)printf ">> Timestamps       : YYYYMMDD-HHMMSS (%s)\n" "$$(date +%Y%m%d-%H%M%S)" > $(SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)printf ">> SRC REMOTE URL   : %s\n" "$(SRC_GITURL)"  >> $(SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)printf ">> SRC SITE VERSION : %s\n" "$(SRC_TAG)"     >> $(SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)printf ">> SRC GIT  VERSION : "                      >> $(SITE_TEMPLATE_PATH)/.versions
-	$(QUIET)cd $(SRC_PATH) && git describe --tags                >> $(SITE_TEMPLATE_PATH)/.versions
+dirs:
+	mkdir -p $(DESTDIR)$(REPO_BASE)
+	mkdir -p $(DESTDIR)$(REPO_DOWNLOADER_BASE)/mib{rfcs,iana}
 
-src_version.show:
-	$(QUIET)cat -b $(SITE_TEMPLATE_PATH)/.versions
-
-src_version.clean:
-	rm -rf $(SITE_TEMPLATE_PATH)/.versions
-
-FORCE:
-
-#reinstall: conf build install
-#restart: uninstall reinstall cf_start cf_status
+.PHONY : install clean dirs $(BINFILES)
