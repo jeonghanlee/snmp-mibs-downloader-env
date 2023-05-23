@@ -25,6 +25,9 @@ jobs:
       run: |
         make init
         make install
-        make setup
+        make get
     - name: Environment Check
-      run: make exist
+      run: |
+        make exist
+        make list
+
