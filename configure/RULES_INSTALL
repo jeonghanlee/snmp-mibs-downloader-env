@@ -18,7 +18,12 @@ bins_install: $(SCRIPTS)
 uninstall: bins_uninstall 
 	$(SUDO) rm -rf $(DESTDIR)$(CONF_DIR)
 	$(SUDO) rm -rf $(DESTDIR)$(DOWNLOADER_DIR)
-	$(SUDO) rm -rf $(DESTDIR)$(MIBS_DIR)
+	$(QUIET) for name in ietf iana; do \
+	    link="$(DESTDIR)$(MIBS_DIR)/$$name"; \
+	    if [ -L "$$link" ] && [ "$$(readlink -- "$$link")" = "/var/lib/mibs/$$name" ]; then \
+	        $(SUDO) rm -f -- "$$link" || exit $$?; \
+	    fi; \
+	done
 
 bins_uninstall:
 	$(foreach file, $(SCRIPTS), $(SUDO) rm -f  $(DESTDIR)/usr/bin/$(file);)
