@@ -3,6 +3,7 @@ CONFS := snmp-mibs-downloader.conf \
          cisco.conf ciscolist \
          iana.conf ianalist \
          ianarfc.conf ianarfclist \
+         ieee.conf ieeelist \
          junos.conf junoslist \
          rfc.conf rfclist rfcmibs.diff \
          screenos.conf screenoslist \

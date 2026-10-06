@@ -1,5 +1,9 @@
 SRC_GITURL:=$(SRC_URL)/$(SRC_NAME)
 SRC_PATH:=$(SRC_NAME)-src
+MIB_DATA_PATH:=$(TOP)/mibs-src
+PYTHON?=python3
+MIB_UPDATE_ARGS=--source "$(SRC_PATH)" --output "$(MIB_DATA_PATH)" --smistrip "$(TOP)/smistrip"
+VARS_EXCLUDES+=MIB_UPDATE_ARGS
 
 # These allow developers to override the variable
 -include $(TOP)/../CONFIG_VARS.local

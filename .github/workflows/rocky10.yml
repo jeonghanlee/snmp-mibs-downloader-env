@@ -1,5 +1,5 @@
 ---
-name: Rocky9
+name: Rocky10
 
 on:
   push:
@@ -11,11 +11,9 @@ on:
     branches: [ master ]
 
 jobs:
-  Rocky9:
-
+  Rocky10:
     runs-on: ubuntu-latest
-    container: rockylinux/rockylinux:9
-
+    container: rockylinux/rockylinux:10.2
     steps:
     - uses: actions/checkout@v3
     - name: Install required packages

@@ -22,7 +22,12 @@ endef
 GIT_VERSION:=$(lastword $(shell git --version))
 
 define gitclone
-$(if $(wildcard $(2)), @echo "Directory $(2) exist. Please remove it first.", git clone  $(1) $(2); git -C $(2) checkout $(3))
+	$(QUIET) if [ -d "$(2)/.git" ]; then \
+	    git -C "$(2)" fetch --tags origin || exit $$?; \
+	else \
+	    git clone "$(1)" "$(2)" || exit $$?; \
+	fi; \
+	git -C "$(2)" checkout "$(3)"
 endef
 
 define distclean
@@ -60,4 +65,3 @@ VARS_EXCLUDES+=gitclone
 VARS_EXCLUDES+=gitclone2
 VARS_EXCLUDES+=distclean
 VARS_EXCLUDES+=checkfile
-

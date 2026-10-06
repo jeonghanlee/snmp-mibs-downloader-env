@@ -8,12 +8,11 @@ SRC_NAME:=${APPNAME}
 
 
 ## Which the source tag / branch / hash id would like to use
-# 2023-08
-# 4.6.2
-SRC_TAG:=tags/debian/1.6
+# Debian downloader release
+SRC_TAG:=tags/debian/1.8
 
 # Placeholder for the site-specific version control 
-SRC_VERSION:=4.6.2
+SRC_VERSION:=1.8
 
 
 -include $(TOP)/../RELEASE.local

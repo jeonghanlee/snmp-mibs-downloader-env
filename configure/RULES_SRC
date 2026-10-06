@@ -28,6 +28,7 @@ default: help
 
 ## Clone Source
 init: clone 
+	$(QUIET) $(MAKE) mibs.update
 
 # gitclone use '-C' option, so git version should be more than 1.8.5. CentOS7 git is imcompatiable.
 #
@@ -48,3 +49,17 @@ list:
 	$(SUDO) download-mibs --list
 
 .PHONY: get list
+
+## Update IETF and IANA MIB sources from official registries
+mibs.update:
+	$(QUIET) $(PYTHON) tools/update-mibs.py update $(MIB_UPDATE_ARGS)
+
+## Verify local MIB source checksums
+mibs.check:
+	$(QUIET) $(PYTHON) tools/update-mibs.py check $(MIB_UPDATE_ARGS)
+
+## Verify every generated MIB against the selected source data
+mibs.installed.check:
+	$(QUIET) $(PYTHON) tools/update-mibs.py installed $(MIB_UPDATE_ARGS)
+
+.PHONY: mibs.update mibs.check mibs.installed.check

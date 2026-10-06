@@ -1,10 +1,16 @@
 # DESTDIR is used for the local install test
 
-install: dirs bins_install conf_install 
-	$(SUDO) cp $(SRC_PATH)/mibrfcs/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
-	$(SUDO) cp $(SRC_PATH)/mibiana/*       $(DESTDIR)$(DOWNLOADER_DIR)/mibiana
-	$(SUDO) gzip -n9f                      $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs/*
-	$(SUDO) gzip -n9f                      $(DESTDIR)$(DOWNLOADER_DIR)/mibiana/*
+install: mibs.check dirs bins_install conf_install
+	$(SUDO) cp $(MIB_DATA_PATH)/mibrfcs/*  $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
+	$(SUDO) cp $(MIB_DATA_PATH)/mibiana/*  $(DESTDIR)$(DOWNLOADER_DIR)/mibiana
+	$(SUDO) cp $(MIB_DATA_PATH)/mibieee/*  $(DESTDIR)$(DOWNLOADER_DIR)/mibieee
+	$(QUIET) for group in mibrfcs mibiana mibieee; do \
+	    set --; \
+	    for source in "$(MIB_DATA_PATH)/$$group/"*; do \
+	        set -- "$$@" "$(DESTDIR)$(DOWNLOADER_DIR)/$$group/$${source##*/}"; \
+	    done; \
+	    $(SUDO) gzip -n9f "$$@" || exit $$?; \
+	done
 	$(SUDO) ln -sf /var/lib/mibs/ietf      $(DESTDIR)$(MIBS_DIR)/ietf
 	$(SUDO) ln -sf /var/lib/mibs/iana      $(DESTDIR)$(MIBS_DIR)/iana
 
@@ -32,6 +38,7 @@ dirs:
 	$(SUDO) $(INSTALL) -d $(DESTDIR)$(CONF_DIR)
 	$(SUDO) $(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibrfcs
 	$(SUDO) $(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibiana
+	$(SUDO) $(INSTALL) -d $(DESTDIR)$(DOWNLOADER_DIR)/mibieee
 	$(SUDO) $(INSTALL) -d $(DESTDIR)$(MIBS_DIR)
 
 .PHONY : install conf_install bins_install uninstall bins_uninstall dirs

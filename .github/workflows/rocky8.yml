@@ -4,7 +4,7 @@ name: Rocky8
 on:
   push:
     branches: [ master ]
-    paths-ignores:
+    paths-ignore:
       - '*.md'
 
   pull_request:
@@ -14,13 +14,13 @@ jobs:
   Rocky8:
 
     runs-on: ubuntu-latest
-    container: rockylinux/rockylinux:8
+    container: rockylinux/rockylinux:8.10
 
     steps:
     - uses: actions/checkout@v3
     - name: Install required packages
       run: |
-        dnf install -y git make sudo tree net-snmp patch which
+        dnf install -y git make sudo tree net-snmp patch which python3
     - name: Setup
       run: |
         make init
@@ -28,6 +28,11 @@ jobs:
         make get
     - name: Environment Check
       run: |
+        make mibs.installed.check
         make exist
         make list
-
+    - name: Reinstall Check
+      run: |
+        make install
+        make get
+        make mibs.installed.check
